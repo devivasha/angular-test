@@ -3,12 +3,16 @@ interface Instructor {
   image: string
 }
 
-export interface Course {
+export interface Course extends CourseDetails {
   id: number;
   name: string;
   imageUrl: string;
   status: string;
   instructors: Instructor[]
+}
+
+export interface CourseDetails {
+  images:string[];
 }
 
 export interface ISearchBarFilter {
