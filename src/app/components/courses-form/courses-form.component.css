@@ -1,0 +1,96 @@
+nz-select {
+  margin: 0 8px 10px 0;
+  width: 120px;
+}
+
+.container {
+  background-color: white;
+  height: 80vh;
+  width: 90%;
+  margin: 20px auto;
+  border-radius: 15px;
+  padding: 20px;
+}
+
+.header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 20px;
+}
+
+.filter-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  height: 50px;
+}
+
+.custom-select {
+  min-width: 180px;
+}
+
+.text {
+  font-size: 16px;
+  color: #575A5B;
+}
+
+.clear-text {
+  cursor: pointer;
+  color: #349DB9;
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: -10px;
+  margin-left: -30px;
+}
+
+.search-form {
+  position: absolute;
+  flex-grow: 1;
+  top: 18px;
+  right: 30px;
+}
+
+.content {
+  padding: 20px;
+  margin-top: 10px;
+
+  .t-header {
+    color: #142F56;
+    font-weight: bold;
+  }
+
+  .id {
+    font-weight: bold;
+    font-size: 16px;
+    color: #142F56;
+  }
+
+  .name {
+    font-weight: bold;
+    font-size: 16px;
+    color: #4871B6 ;
+  }
+
+  .status-button {
+    border-color: #436354;
+    border-radius: 8px;
+    color: black
+  }
+
+  .instructors {
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+    gap: 5px;
+  }
+
+  .instructor-label {
+    font-weight: bold;
+  }
+
+  .instructor-names {
+    font-weight: normal;
+  }
+}

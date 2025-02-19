@@ -1,0 +1,21 @@
+nz-input-group {
+  &.search-group {
+    top: 90px;
+    left: 130px;
+    width: 300px;
+    .ant-input-group-addon {
+      background: grey;
+    }
+  }
+}
+
+[nz-icon] {
+  color: #5B88DB;
+}
+
+#clearSearchIcon {
+  z-index: 3;
+  position: absolute;
+  top: 30%;
+  right: 45px;
+}

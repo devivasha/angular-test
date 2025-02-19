@@ -1,1 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+nz-content {
+  background: #F7FAFB;
+  color: black;
+  height: 95vh;
+  min-height: 120px;
+  line-height: 120px;
+}
+
+nz-layout {
+  margin-bottom: 48px;
+}
+
+nz-select {
+  margin: 0 8px 10px 0;
+  width: 120px;
+}

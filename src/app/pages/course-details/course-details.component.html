@@ -1,0 +1,50 @@
+<nz-layout>
+  <nz-header class="header">
+    <app-header
+      [title]="'Courses'"
+      [subTitle]="courseDetails()?.name"
+    ></app-header>
+  </nz-header>
+  <nz-content >
+    <div class="container">
+      <div class="course-info">
+        <div class="course-field">
+          <label class="title">Course Name</label>
+          <input nz-input [value]="courseDetails()?.name" />
+        </div>
+        <div class="course-field">
+          <label class="title">Course Status</label>
+          <nz-select class="select" nzSize="large" [ngModel]="selectedCourseStatusSignal()">
+            <nz-option nzValue="PUBLISHED" nzLabel="PUBLISHED"></nz-option>
+            <nz-option nzValue="DRAFT" nzLabel="DRAFT"></nz-option>
+          </nz-select>
+        </div>
+      </div>
+      <div class="course-details">
+        <div class="course-card">
+          <label class="title">Course card image</label>
+          <div class="image-container">
+            <div *ngFor="let item of courseDetails()?.images" class="image-card">
+              <h3>Header</h3>
+              <img [src]="item" alt="Course Image" style="width: 200px; height: 270px">
+            </div>
+          </div>
+        </div>
+        <div class="course-instructor">
+          <label class="title">Instructor</label>
+          <div>
+            <nz-select
+              style="width: 100%"
+              nzSize="large"
+              nzMode="multiple"
+              [(ngModel)]="listOfSelectedValue"
+            >
+              <nz-option *ngFor="let item of listOfOption" [nzLabel]="item.label" [nzValue]="item.value"></nz-option>
+            </nz-select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nz-content>
+</nz-layout>
+

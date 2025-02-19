@@ -1,0 +1,10 @@
+<nz-input-group class="search-group" [nzAddOnBefore]="suffixIconSearch">
+  <input type="text" nz-input placeholder="Search {{ text }}" (input)="onSearch($event)" [formControl]="control" />
+  @if (searchValue) {
+    <i id="clearSearchIcon" nz-icon nzType="close" (click)="clearSearch()"></i>
+  }
+</nz-input-group>
+<ng-template #suffixIconSearch>
+  <span nz-icon nzType="search"></span>
+</ng-template>
+

@@ -1,0 +1,54 @@
+<div class="container">
+  <div class="header">
+    <form [formGroup]="filterForm">
+      <div class="filter-section">
+        <p class="text">Filter by:</p>
+        <nz-select class="custom-select" nzPlaceHolder="Course Status" formControlName="status">
+          <nz-option nzValue="all" nzLabel="All"></nz-option>
+          <nz-option nzValue="published" nzLabel="Published"></nz-option>
+          <nz-option nzValue="draft" nzLabel="Draft"></nz-option>
+        </nz-select>
+        <a nz-button nzType="link" class="clear-text" (click)="onClear()">Clear</a>
+        <div class="search-form">
+          <app-search-bar [control]="filterForm.get('searching')" [text]="'courses'" />
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="content">
+    <div>
+      <nz-table #basicTable [nzData]="listOfCourses()" [nzShowPagination]="false" [nzNoResult]="noResult">
+        <thead>
+        <tr>
+          <th class="t-header">ID</th>
+          <th class="t-header">Image</th>
+          <th class="t-header">Name</th>
+          <th class="t-header">Status</th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (data of basicTable.data; track data) {
+            <tr routerLink="/courses/{{data.id}}">
+              <td>{{ data?.id }}</td>
+              <td><img [src]="data?.imageUrl" alt="course-img"/></td>
+              <td>
+                <p class="name">{{ data?.name}}</p>
+                <div class="instructors">
+                  <p class="instructor-label">Instructors:
+                    <span class="instructor-names" *ngFor="let instructor of data?.instructors; let last = last">{{ instructor.name }}<span *ngIf="!last">, </span></span>
+                  </p>
+                </div>
+              </td>
+              <td>
+                <button nz-button nzType="default" class="status-button">{{ data?.status  }}</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </nz-table>
+    </div>
+    <ng-template #noResult>
+      <span *ngIf="basicTable.data.length === 0">There are no courses were found.</span>
+    </ng-template>
+  </div>
+</div>
