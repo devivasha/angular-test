@@ -30,9 +30,9 @@
           @for (data of basicTable.data; track data) {
             <tr routerLink="/courses/{{data.id}}">
               <td>{{ data?.id }}</td>
-              <td><img [src]="data?.imageUrl" alt="course-img"/></td>
+              <td><img ngSrc="{{ data?.imageUrl }}" width="100" height="100" alt="course-img"/></td>
               <td>
-                <p class="name">{{ data?.name}}</p>
+                <p class="name">{{ data?.name }}</p>
                 <div class="instructors">
                   <p class="instructor-label">Instructors:
                     <span class="instructor-names" *ngFor="let instructor of data?.instructors; let last = last">{{ instructor.name }}<span *ngIf="!last">, </span></span>
@@ -40,7 +40,7 @@
                 </div>
               </td>
               <td>
-                <button nz-button nzType="default" class="status-button">{{ data?.status  }}</button>
+                <button nz-button nzType="default" class="status-button">{{ data?.status }}</button>
               </td>
             </tr>
           }
@@ -48,7 +48,7 @@
       </nz-table>
     </div>
     <ng-template #noResult>
-      <span *ngIf="basicTable.data.length === 0">There are no courses were found.</span>
+      <span *ngIf="basicTable.data.length === 0">There are no courses found.</span>
     </ng-template>
   </div>
 </div>

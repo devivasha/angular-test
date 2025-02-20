@@ -13,7 +13,6 @@ import {CoursesFormComponent} from '../../components/courses-form/courses-form.c
     CoursesFormComponent
   ],
   templateUrl: './courses.component.html',
-  standalone: true,
   styleUrl: './courses.component.css'
 })
 export class CoursesComponent {}

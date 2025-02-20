@@ -2,11 +2,11 @@
   "name": "lms",
   "version": "0.0.0",
   "scripts": {
-    "ng": "lms/node_modules/.bin/ng",
-    "start": "lms/node_modules/.bin/ng serve",
-    "build": "lms/node_modules/.bin/ng build",
-    "watch": "lms/node_modules/.bin/ng build --watch --configuration development",
-    "test": "lms/node_modules/.bin/ng test"
+    "ng": "node_modules/.bin/ng",
+    "start": "node_modules/.bin/ng serve",
+    "build": "node_modules/.bin/ng build",
+    "watch": "node_modules/.bin/ng build --watch --configuration development",
+    "test": "node_modules/.bin/ng test"
   },
   "private": true,
   "dependencies": {
@@ -18,8 +18,6 @@
     "@angular/platform-browser": "^19.0.0",
     "@angular/platform-browser-dynamic": "^19.0.0",
     "@angular/router": "^19.0.0",
-    "less": "^4.2.2",
-    "less-loader": "^12.2.0",
     "ng-zorro-antd": "19.0.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
