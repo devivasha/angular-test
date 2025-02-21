@@ -1,14 +1,21 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { NgForOf, NgIf, NgOptimizedImage } from '@angular/common';
-import { RouterLink } from '@angular/router';
 import {
-  FormControl,
+  Component,
+  inject,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
+import {
+  NgForOf,
+  NgIf,
+  NgOptimizedImage
+} from '@angular/common';
+import {
   FormGroup,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   FormsModule,
 } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 import { NzOptionComponent, NzSelectComponent } from 'ng-zorro-antd/select';
 import { NzSelectModule } from 'ng-zorro-antd/select';
@@ -20,6 +27,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
 import { CoursesService } from '../../services/courses.service';
 import { CourseStatus } from '../../models/course-status.enum';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-courses-form',
@@ -42,11 +50,12 @@ import { CourseStatus } from '../../models/course-status.enum';
   templateUrl: './courses-form.component.html',
   styleUrl: './courses-form.component.css',
 })
-export class CoursesFormComponent implements OnInit {
+export class CoursesFormComponent implements OnInit, OnDestroy {
+  private destroy$: Subject<void> = new Subject<void>();
   coursesService: CoursesService = inject(CoursesService);
   fb: NonNullableFormBuilder = inject(NonNullableFormBuilder);
 
-  loading: boolean = false;
+  loading = false;
   filterForm!: FormGroup;
 
   listOfCourses = this.coursesService.coursesSignal;
@@ -55,14 +64,18 @@ export class CoursesFormComponent implements OnInit {
     this.initializeForm();
   }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   private initializeForm() {
     this.filterForm = this.fb.group({
       searching: [''],
       status: [CourseStatus.ALL],
     });
 
-    this.filterForm.valueChanges.subscribe(() => {
-      // unsibscribe ?
+    this.filterForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.loading = true;
       const searchTerm = this.filterForm.get('searching')?.value;
       const status = this.filterForm.get('status')?.value;

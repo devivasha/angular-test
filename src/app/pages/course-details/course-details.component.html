@@ -1,25 +1,27 @@
 <nz-layout>
   <nz-header class="header">
     <app-header
-      [title]="'Courses'"
+      [title]="title()"
       [subTitle]="courseDetails()?.name"
     ></app-header>
   </nz-header>
   <nz-content >
     <div class="container">
+      <form [formGroup]="courseForm">
       <div class="course-info">
         <div class="course-field">
           <label class="title">Course Name</label>
-          <input nz-input [value]="courseDetails()?.name" />
+          <input nz-input formControlName="courseName" />
         </div>
         <div class="course-field">
           <label class="title">Course Status</label>
-          <nz-select class="select" nzSize="large" [ngModel]="selectedCourseStatusSignal()">
+          <nz-select class="select" nzSize="large" formControlName="courseStatus">
             <nz-option nzValue="PUBLISHED" nzLabel="PUBLISHED"></nz-option>
             <nz-option nzValue="DRAFT" nzLabel="DRAFT"></nz-option>
           </nz-select>
         </div>
       </div>
+      </form>
       <div class="course-details">
         <div class="course-card">
           <label class="title">Course card image</label>
@@ -39,7 +41,7 @@
               nzMode="multiple"
               [(ngModel)]="listOfSelectedValue"
             >
-              <nz-option *ngFor="let item of listOfOption" [nzLabel]="item.label" [nzValue]="item.value"></nz-option>
+              <nz-option *ngFor="let item of listOfOption()" [nzLabel]="item.label" [nzValue]="item.value"></nz-option>
             </nz-select>
           </div>
         </div>
