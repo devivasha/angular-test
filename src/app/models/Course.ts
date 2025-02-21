@@ -1,21 +1,23 @@
+import { CourseStatus } from "./course-status.enum";
+
 interface Instructor {
-  name:string;
-  image: string
+  name: string;
+  image: string;
 }
 
 export interface Course extends CourseDetails {
   id: number;
   name: string;
   imageUrl: string;
-  status: string;
-  instructors: Instructor[]
+  status: CourseStatus;
+  instructors: Instructor[];
 }
 
 export interface CourseDetails {
-  images:string[];
+  images: string[];
 }
 
 export interface ISearchBarFilter {
   searchTerm?: string;
-  status?: string;
+  status?: CourseStatus;
 }

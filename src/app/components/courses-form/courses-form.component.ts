@@ -1,7 +1,13 @@
-import { Component, inject, OnDestroy } from '@angular/core';
-import { NgForOf, NgIf} from '@angular/common';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { NgForOf, NgIf, NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  FormsModule,
+} from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 
 import { NzOptionComponent, NzSelectComponent } from 'ng-zorro-antd/select';
@@ -13,7 +19,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 
 import { SearchBarComponent } from '../search-bar/search-bar.component';
 import { CoursesService } from '../../services/courses.service';
-import { ISearchBarFilter } from '../../models/Course';
+import { CourseStatus } from '../../models/course-status.enum';
 
 @Component({
   selector: 'app-courses-form',
@@ -31,70 +37,43 @@ import { ISearchBarFilter } from '../../models/Course';
     NgForOf,
     NgIf,
     RouterLink,
+    NgOptimizedImage,
   ],
   templateUrl: './courses-form.component.html',
-  standalone: true,
-  styleUrl: './courses-form.component.css'
+  styleUrl: './courses-form.component.css',
 })
-export class CoursesFormComponent implements OnDestroy {
-  coursesService:CoursesService = inject(CoursesService);
-  fb:NonNullableFormBuilder = inject(NonNullableFormBuilder)
-
-  private searchSubject: Subject<ISearchBarFilter> = new Subject();
-  private searchTerm: string = '';
+export class CoursesFormComponent implements OnInit {
+  coursesService: CoursesService = inject(CoursesService);
+  fb: NonNullableFormBuilder = inject(NonNullableFormBuilder);
 
   loading: boolean = false;
   filterForm!: FormGroup;
 
   listOfCourses = this.coursesService.coursesSignal;
 
-  constructor() {
+  ngOnInit(): void {
     this.initializeForm();
-
-    this.searchSubject.pipe(debounceTime(300), distinctUntilChanged()).subscribe((filter: ISearchBarFilter) => {
-      this.loading = true;
-
-      const { searchTerm, status } = filter;
-      this.coursesService.filterItems({ searchTerm, status })
-
-      this.loading = false;
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.searchSubject.complete();
   }
 
   private initializeForm() {
     this.filterForm = this.fb.group({
-      searching: new FormControl(''),
-      status: new FormControl('all')
+      searching: [''],
+      status: [CourseStatus.ALL],
     });
 
-    this.filterForm.valueChanges.subscribe(value => {
+    this.filterForm.valueChanges.subscribe(() => {
+      // unsibscribe ?
+      this.loading = true;
       const searchTerm = this.filterForm.get('searching')?.value;
       const status = this.filterForm.get('status')?.value;
-
-      this.onSearch(searchTerm, status);
-    });
-  }
-
-  public onSearch(value: string, status: string): void {
-    this.loading = true;
-    this.searchTerm = value;
-
-    this.searchSubject.next({
-      searchTerm: this.searchTerm,
-      status: status === 'all' ? '' : status
+      this.coursesService.filterItems({ searchTerm, status });
     });
   }
 
   public onClear(): void {
     this.filterForm.reset({
       searching: '',
-      status: 'all'
+      status: CourseStatus.ALL,
     });
-
-    this.onSearch('', 'all');
   }
 }
