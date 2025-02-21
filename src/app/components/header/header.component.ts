@@ -1,11 +1,15 @@
-import { Component, input } from '@angular/core';
+import {
+  Component,
+  input,
+  InputSignal
+} from '@angular/core';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  title = input.required<string>(); // why signals for string ?
-  subTitle = input<string>();
+  title: InputSignal<string> = input.required<string>();
+  subTitle:  InputSignal<string | undefined> = input<string>();
 }

@@ -17,7 +17,7 @@ export interface CourseDetails {
   images: string[];
 }
 
-export interface ISearchBarFilter {
+export interface SearchBarFilter {
   searchTerm?: string;
   status?: CourseStatus;
 }

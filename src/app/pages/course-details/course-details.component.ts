@@ -1,6 +1,19 @@
-import { Component, inject, input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  Component,
+  inject,
+  input,
+  InputSignal,
+  OnInit,
+  signal,
+  WritableSignal
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import { NgForOf } from '@angular/common';
 
 import {
@@ -14,6 +27,7 @@ import { NzOptionComponent, NzSelectComponent } from 'ng-zorro-antd/select';
 
 import { HeaderComponent } from '../../components/header/header.component';
 import { CoursesService } from '../../services/courses.service';
+import { Course } from '../../models/course';
 
 @Component({
   selector: 'app-course-details',
@@ -34,15 +48,23 @@ import { CoursesService } from '../../services/courses.service';
   styleUrl: './course-details.component.css',
 })
 export class CourseDetailsComponent implements OnInit {
-  id = input.required<string>();
-  activatedRoute: ActivatedRoute = inject(ActivatedRoute);
+  id: InputSignal<string> = input.required<string>();
+  title: WritableSignal<string> = signal<string>('Courses');
   courseService: CoursesService = inject(CoursesService);
 
-  courseDetails = this.courseService.selectedCourseSignal;
-  selectedCourseStatusSignal = this.courseService.selectedCourseStatusSignal;
+  courseDetails: WritableSignal<Course | null> = this.courseService.selectedCourseSignal;
 
-  listOfOption: Array<{ label: string; value: string }> = [];
-  listOfSelectedValue: Array<string> = [];
+  listOfOption: WritableSignal<{ label: string; value: string }[]> = signal<{ label: string; value: string }[]>([]);
+  listOfSelectedValue: WritableSignal<string[]> = signal<string[]>([]);
+  courseForm!: FormGroup;
+
+  constructor(private fb: FormBuilder) {
+    this.courseForm = this.fb.group({
+      courseName: ['', Validators.required],
+      courseStatus: ['', Validators.required],
+      instructors: [[]]
+    });
+  }
 
   ngOnInit() {
     if (this.id()) {
@@ -51,18 +73,28 @@ export class CourseDetailsComponent implements OnInit {
       const details = this.courseService
         .allCoursesSignal()
         .find((course) => String(course.id) === this.id());
+      if (details) {
 
-      if (details?.instructors) {
-        this.listOfOption = details.instructors.map((instructor) => ({
-          label: instructor?.name || '',
-          value: instructor?.name || '',
-        }));
+        this.courseForm.patchValue({
+          courseName: details.name || '',
+          courseStatus: details.status || '',
+          instructors: details.instructors?.map((instructor) => instructor?.name || '') || []
+        });
 
-        this.listOfSelectedValue = details.instructors.map(
-          (instructor) => instructor?.name || ''
-        );
+        if (details?.instructors) {
+          this.listOfOption.set(
+            details.instructors.map((instructor) => ({
+              label: instructor?.name || '',
+              value: instructor?.name || '',
+            }))
+          );
+
+          this.listOfSelectedValue.set(
+            details.instructors.map((instructor) => instructor?.name || '')
+          );
+        }
       }
     }
   }
 }
-// there is no form for some reason, some random signals used, like there is signal for a status but just an array for instructors, this all is totally wrong
+

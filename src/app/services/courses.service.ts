@@ -1,7 +1,11 @@
-import { inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import {
+  inject,
+  Injectable,
+  signal,
+  WritableSignal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Course, ISearchBarFilter } from '../models/Course';
+import { Course, SearchBarFilter } from '../models/course';
 import { CourseStatus } from '../models/course-status.enum';
 
 @Injectable({
@@ -30,8 +34,7 @@ export class CoursesService {
     });
   }
 
-  public filterItems(filter: ISearchBarFilter) {
-    debugger
+  public filterItems(filter: SearchBarFilter) {
     const { searchTerm, status } = filter;
 
     if (this.allCoursesSignal().length === 0) {
